@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 // importar las dependencias de firebase
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
-//import 'rxjs/add/operator/map'; 
+import {map} from 'rxjs/operators'; 
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  
+  infoLogout;
 
   constructor(public afAuth: AngularFireAuth) { }
 
@@ -17,7 +17,7 @@ export class AuthService {
    * Se crea el metodo logout() propio de firebase
    */
   logout() {
-    return this.afAuth.auth.signOut();
+    this.infoLogout = this.afAuth.auth.signOut();
   }
 
   // Creacion de usuario registeUser();
@@ -40,9 +40,7 @@ export class AuthService {
 
   // Metodo devuelve los datos del usuario logueado
   getAuth(){
-    return this.afAuth.authState.subscribe(response=>{
-      console.log('Info usuario logueado',response)
-    })
+    return this.afAuth.authState.pipe(map(data=>data))
   }
 
 }
